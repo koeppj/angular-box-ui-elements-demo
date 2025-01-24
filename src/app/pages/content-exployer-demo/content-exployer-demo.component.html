@@ -1,0 +1,8 @@
+<div class="p3">
+    <div class="row">
+        <app-box-folder-input (folderId)="onFolderIdChange($event)"></app-box-folder-input>
+    </div>
+    <div class="row">
+        <content-explorer  [entityId]="folderId" [accessToken]="(boxOAuthService.accessToken$ | async) ?? ''" [options]="options"></content-explorer>
+    </div>
+</div>

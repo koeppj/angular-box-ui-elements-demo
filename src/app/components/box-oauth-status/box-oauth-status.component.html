@@ -1,0 +1,16 @@
+<div class="container text-left p-2">
+    <div class="row g-4 align-items-center">
+        <div class="col-auto">
+            <span class="fw-bold">Is Authenticated to Box:</span>
+            <input type="checkbox" readonly [checked] ="boxOAuthService.isAuthenticated$ | async">
+        </div>
+        <div class="col-auto">
+            <span class="fw-bold">Box Access Token:</span>
+            <span>{{ boxOAuthService.accessToken$ | async }}</span>
+        </div>
+        <div class="col-auto">
+            <span class="fw-bold">Last Last Authentication Messae:</span>
+            <span>{{ boxOAuthService.authMessage$| async }}</span>
+        </div>
+    </div>
+</div>

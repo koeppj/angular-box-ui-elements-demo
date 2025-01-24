@@ -1,0 +1,37 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/content-explorer" routerLinkActive="active" ariaCurrentWhenActive="page">Explorer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link actve" routerLink="/content-uploader" routerLinkActive="active" ariaCurrentWhenActive="page">Uploader</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link actve" routerLink="/content-preview" routerLinkActive="active" ariaCurrentWhenActive="page">Preview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link actve" routerLink="/content-upload-metadata" routerLinkActive="active" ariaCurrentWhenActive="page">Upload with Metadata</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <button class="btn btn-outline-success" type="button" (click)="doLogin()">Box Login</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div class="width-auto p3 pageheight">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<footer class="mt-2 py-2">
+  <div class="container">
+    <app-box-oauth-status></app-box-oauth-status>
+  </div>
+</footer>

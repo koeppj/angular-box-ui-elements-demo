@@ -1,0 +1,13 @@
+:host {
+    .auth-stat-container {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+    .auth-stat-item {
+        text-align: center;
+        padding: 10px 20px;
+    }
+}

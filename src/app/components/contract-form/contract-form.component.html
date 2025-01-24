@@ -1,0 +1,149 @@
+<div class="container my-3">
+    <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+      <!-- Row 1: External Party Name | Contract Type | Risk Level -->
+      <div class="row">
+        <!-- External Party Name -->
+        <div class="col-md-4 mb-3">
+          <label for="externalPartyName" class="form-label">External Party Name</label>
+          <input
+            type="text"
+            id="externalPartyName"
+            class="form-control"
+            formControlName="externalPartyName"
+            [ngClass]="{'is-invalid': submitted && f['externalPartyName'].errors}"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="submitted && f['externalPartyName'].errors"
+          >
+            External Party Name is required.
+          </div>
+        </div>
+  
+        <!-- Contract Type (Dropdown) -->
+        <div class="col-md-4 mb-3">
+          <label for="contractType" class="form-label">Contract Type</label>
+          <select
+            id="contractType"
+            class="form-control"
+            formControlName="contractType"
+            [ngClass]="{'is-invalid': submitted && f['contractType'].errors}"
+          >
+            <option value="" disabled>Select Contract Type</option>
+            <option *ngFor="let type of contractTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="submitted && f['contractType'].errors"
+          >
+            Contract Type is required.
+          </div>
+        </div>
+  
+        <!-- Risk Level (Dropdown) -->
+        <div class="col-md-4 mb-3">
+          <label for="riskLevel" class="form-label">Risk Level</label>
+          <select
+            id="riskLevel"
+            class="form-control"
+            formControlName="riskLevel"
+            [ngClass]="{'is-invalid': submitted && f['riskLevel'].errors}"
+          >
+            <option value="" disabled>Select Risk Level</option>
+            <option *ngFor="let risk of riskLevels" [value]="risk">
+              {{ risk }}
+            </option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="submitted && f['riskLevel'].errors"
+          >
+            Risk Level is required.
+          </div>
+        </div>
+      </div>
+  
+      <!-- Row 2: Layer | End Date | Auto Review -->
+      <div class="row">
+        <!-- Layer -->
+        <div class="col-md-4 mb-3">
+          <label for="layer" class="form-label">Layer</label>
+          <input
+            type="text"
+            id="layer"
+            class="form-control"
+            formControlName="layer"
+            [ngClass]="{'is-invalid': submitted && f['layer'].errors}"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['layer'].errors">
+            Layer is required.
+          </div>
+        </div>
+  
+        <!-- End Date -->
+        <div class="col-md-4 mb-3">
+          <label for="endDate" class="form-label">End Date</label>
+          <input
+            type="date"
+            id="endDate"
+            class="form-control"
+            formControlName="endDate"
+            [ngClass]="{'is-invalid': submitted && f['endDate'].errors}"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['endDate'].errors">
+            End Date is required.
+          </div>
+        </div>
+  
+        <!-- Auto Review (Yes/No Dropdown) -->
+        <div class="col-md-4 mb-3">
+          <label for="autoReview" class="form-label">Auto Review</label>
+          <select
+            id="autoReview"
+            class="form-control"
+            formControlName="autoReview"
+            [ngClass]="{'is-invalid': submitted && f['autoReview'].errors}"
+          >
+            <option value="" disabled>Select Yes or No</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="submitted && f['autoReview'].errors"
+          >
+            Auto Review is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 - File Mame -->
+      <div class="row">
+        <!-- External Party Name -->
+        <div class="col-md-4 mb-3">
+          <label for="attachment" class="form-label">External Party Name</label>
+          <input
+            type="file"
+            id="attacjment"
+            class="form-control"
+            formControlName="attachment"
+            [ngClass]="{'is-invalid': submitted && f['attachment'].errors}"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="submitted && f['attachment'].errors"
+          >
+            Must specify a file.
+          </div>
+        </div>
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+  
