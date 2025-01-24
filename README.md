@@ -1,13 +1,13 @@
-<img src="/src/assets/box-dev-logo.png" 
-alt= "Box Dev Logo"
-style="margin-left:-10px;"
-width="40%">
 
-# AngularBoxUiElementsCdn
+# AngularBoxUiElementsDemo
 
-This project is a demo of using Box UI Elements with Angular.
+This is a fork of 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.3.
+This project is a demo of using Box UI Elements with Angular.  It was forked from [AngularBoxUiElementsCdn](https://github.com/box-community/angular-box-ui-elements-cdn)
+
+This project uses Node 18, Angular 19 and Box UI-Elements 22.
+
+In addtion to Box UI-Elements this project also demonstrates use of a [Box oAuth custom ciient](https://developer.box.com/guides/authentication/oauth2/).  
 
 ## Development server
 
