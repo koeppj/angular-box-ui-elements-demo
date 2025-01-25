@@ -1,6 +1,8 @@
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
+import { File } from 'box-typescript-sdk-gen/lib/schemas/file.generated'
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'content-exployer-demo',
@@ -22,15 +24,15 @@ export class ContentExployerDemoComponent {
         },
         hasMetadata: true,
         hasActivityFeed: true,
-        hasVersions: true
+        hasVersions: true,
       }
     },
     canShare: false,
     onDownload: (event: any) => this.onFilePreview(event),
   }
 
-  constructor(public boxOAuthService: BoxOauthTokenService
-
+  constructor(public boxOAuthService: BoxOauthTokenService,
+              private httpClient: HttpClient
   ) { 
   }
 
@@ -38,7 +40,21 @@ export class ContentExployerDemoComponent {
     this.folderId = folderId;
   }
 
-  onFilePreview(event: any)   {
-    console.log('File previewed', event);
+  async onFilePreview(event: File[])   {
+    const file = event[0];
+    console.log('File previewed', file);
+    try{
+      const fileId = file.id;
+      console.debug(`Gettiing download URL for file:${fileId}`);
+      const downloadUrl = await this.boxOAuthService.boxClient.downloads.getDownloadFileUrl(fileId);
+      const localPayload = {
+        downloadUrl: downloadUrl,
+        fileName: file.name
+      }
+      const localRequest = lastValueFrom(this.httpClient.post("http://localhost:3000",localPayload));
+    }
+    catch (error: any) {
+      console.log(`Error getting download URL:${error.message}`)
+    }
   }
 }
