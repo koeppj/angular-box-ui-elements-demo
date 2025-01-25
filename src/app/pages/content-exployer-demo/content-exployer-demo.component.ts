@@ -17,10 +17,12 @@ export class ContentExployerDemoComponent {
       contentSidebarProps: {
         detailsSidebarProps: {
           hasProperties: true,
-          hasAccessStats: true
+          hasAccessStats: true,
+          hasVersions: true,
         },
         hasMetadata: true,
         hasActivityFeed: true,
+        hasVersions: true
       }
     },
     canShare: false,

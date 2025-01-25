@@ -81,15 +81,17 @@ export class BoxOauthTokenService {
 
   public getAuthURL(redirectUri: string): string {
     let url = this.boxOAuth.getAuthorizeUrl({redirectUri: redirectUri});
-    console.log(url);
     return url;
+  }
+
+  public async getBearerToken(): Promise<string | undefined> {
+    return this.boxOAuth.retrieveAuthorizationHeader();
   }
 
   public async validateCode(code: string)  {
     await this.boxOAuth.getTokensAuthorizationCodeGrant(code).then(token => {
       if (token.accessToken) {
-        let devToken = new BoxDeveloperTokenAuth({token: token.accessToken});
-        this.boxClient = new BoxClient({auth: devToken});
+        //this.boxClient = new BoxClient({ auth: this.boxOAuth});
         this.authMessageSubject$.next("Authenticated...");
         this.accessTokenSubject$.next(token.accessToken);
         this.isAuthenticatedSubect$.next(true);
@@ -104,8 +106,7 @@ export class BoxOauthTokenService {
   private refreshToken() {
     this.boxOAuth.refreshToken().then(token => {
       if (token.accessToken) {
-        let devToken = new BoxDeveloperTokenAuth({token: token.accessToken});
-        this.boxClient = new BoxClient({auth: devToken});
+        //this.boxClient = new BoxClient({ auth: this.boxOAuth});
         this.authMessageSubject$.next("Token Refreshed");
         this.accessTokenSubject$.next(token.accessToken);
         this.isAuthenticatedSubect$.next(true);

@@ -1,4 +1,5 @@
 <div class="container my-3">
+  <div class="row">
     <form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
       <!-- Row 1: External Party Name | Contract Type | Risk Level -->
       <div class="row">
@@ -65,21 +66,22 @@
         </div>
       </div>
   
-      <!-- Row 2: Layer | End Date | Auto Review -->
+      <!-- Row 2: lawyer | End Date | Auto Review -->
       <div class="row">
-        <!-- Layer -->
+        <!-- lawyer -->
         <div class="col-md-4 mb-3">
-          <label for="layer" class="form-label">Layer</label>
-          <input
-            type="text"
-            id="layer"
+          <label for="lawyer" class="form-label">lawyer</label>
+          <select
+            id="lawyer"
             class="form-control"
-            formControlName="layer"
-            [ngClass]="{'is-invalid': submitted && f['layer'].errors}"
-          />
-          <div class="invalid-feedback" *ngIf="submitted && f['layer'].errors">
-            Layer is required.
-          </div>
+            formControlName="lawyer"
+            [ngClass]="{'is-invalid': submitted && f['lawyer'].errors}"
+          >
+            <option value="" disabled>Select Lawyer</option>
+            <option *ngFor="let lawyer of lawyers" [value]="lawyer">
+              {{ lawyer }}
+            </option>
+          </select>
         </div>
   
         <!-- End Date -->
@@ -99,20 +101,20 @@
   
         <!-- Auto Review (Yes/No Dropdown) -->
         <div class="col-md-4 mb-3">
-          <label for="autoReview" class="form-label">Auto Review</label>
+          <label for="autoRenew" class="form-label">Auto Review</label>
           <select
-            id="autoReview"
+            id="autoRenew"
             class="form-control"
-            formControlName="autoReview"
-            [ngClass]="{'is-invalid': submitted && f['autoReview'].errors}"
+            formControlName="autoRenew"
+            [ngClass]="{'is-invalid': submitted && f['autoRenew'].errors}"
           >
-            <option value="" disabled>Select Yes or No</option>
+            <option value="No" disabled>Select Yes or No</option>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
           <div
             class="invalid-feedback"
-            *ngIf="submitted && f['autoReview'].errors"
+            *ngIf="submitted && f['autoRenew'].errors"
           >
             Auto Review is required.
           </div>
@@ -129,6 +131,8 @@
             id="attacjment"
             class="form-control"
             formControlName="attachment"
+            (change)="onFilesSelected($event)"
+            multiple="false"
             [ngClass]="{'is-invalid': submitted && f['attachment'].errors}"
           />
           <div
@@ -146,4 +150,7 @@
       </button>
     </form>
   </div>
-  
+<div classs="row">
+  <p>{{ message }}</p>
+</div>
+</div>  
