@@ -1,0 +1,14 @@
+export const environment = {
+    production: false,
+    BoxDeveloperToken: '**********',
+    BoxPreviewFileID: '***********',
+    BoxClientID: '******',
+    BoxClientSecret: '****',
+    // The frequency with which the BoxOauthTokenService refreshes
+    // the access token.  Specified in Minutes.
+    BoxAccessTokenRefreshInterval: 40,
+    /*
+    * The name of the storage key used by BoxTokenStorageService 
+    */
+    BoxTokenStorageKeyName: 'BOXAPP'
+};
