@@ -8,8 +8,8 @@ describe('PostBoxLoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PostBoxLoginComponent ]
-    })
+    imports: [PostBoxLoginComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PostBoxLoginComponent);

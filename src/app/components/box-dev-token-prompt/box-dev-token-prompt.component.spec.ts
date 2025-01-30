@@ -8,8 +8,8 @@ describe('BoxDevTokenPromptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BoxDevTokenPromptComponent ]
-    })
+    imports: [BoxDevTokenPromptComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(BoxDevTokenPromptComponent);

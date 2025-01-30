@@ -4,8 +4,7 @@ import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 @Component({
     selector: 'app-pre-box-login',
     templateUrl: './pre-box-login.component.html',
-    styleUrls: ['./pre-box-login.component.scss'],
-    standalone: false
+    styleUrls: ['./pre-box-login.component.scss']
 })
 export class PreBoxLoginComponent implements OnInit {
 

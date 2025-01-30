@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { File } from 'box-typescript-sdk-gen/lib/schemas/file.generated';
+import { BoxFolderInputComponent } from '../../components/box-folder-input/box-folder-input.component';
+import { ContractFormComponent } from '../../components/contract-form/contract-form.component';
 
 @Component({
-  selector: 'app-content-upload-metadata',
-  templateUrl: './content-upload-metadata.component.html',
-  styleUrl: './content-upload-metadata.component.scss',
-  standalone: false
+    selector: 'app-content-upload-metadata',
+    templateUrl: './content-upload-metadata.component.html',
+    styleUrl: './content-upload-metadata.component.scss',
+    imports: [BoxFolderInputComponent, ContractFormComponent]
 })
 export class ContentUploadMetadataComponent {
 

@@ -8,8 +8,8 @@ describe('PreBoxLoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PreBoxLoginComponent ]
-    })
+    imports: [PreBoxLoginComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PreBoxLoginComponent);

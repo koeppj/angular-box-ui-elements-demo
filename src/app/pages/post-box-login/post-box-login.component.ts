@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { BehaviorSubject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-post-box-login',
     templateUrl: './post-box-login.component.html',
     styleUrls: ['./post-box-login.component.scss'],
-    standalone: false
+    imports: [AsyncPipe]
 })
 export class PostBoxLoginComponent implements OnInit {
 

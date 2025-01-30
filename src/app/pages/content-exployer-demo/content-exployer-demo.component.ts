@@ -1,14 +1,18 @@
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { File } from 'box-typescript-sdk-gen/lib/schemas/file.generated'
 import { lastValueFrom } from 'rxjs';
+import { BoxFolderInputComponent } from '../../components/box-folder-input/box-folder-input.component';
+import { ContentExplorerComponent } from '../../components/content-explorer/content-explorer.component';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'content-exployer-demo',
-  templateUrl: './content-exployer-demo.component.html',
-  styleUrl: './content-exployer-demo.component.scss',
-  standalone: false
+    selector: 'content-exployer-demo',
+    templateUrl: './content-exployer-demo.component.html',
+    styleUrl: './content-exployer-demo.component.scss',
+    imports: [CommonModule, BoxFolderInputComponent, ContentExplorerComponent, AsyncPipe],
+    standalone: true
 })
 
 export class ContentExployerDemoComponent {

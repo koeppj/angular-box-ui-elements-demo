@@ -8,8 +8,8 @@ describe('BoxOauthStatusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BoxOauthStatusComponent ]
-    })
+    imports: [BoxOauthStatusComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(BoxOauthStatusComponent);

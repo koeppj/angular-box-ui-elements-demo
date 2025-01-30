@@ -2,8 +2,28 @@
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+
+import { HeadService } from '@app/services/head.service';
+import { BoxTokenService } from './app/services/box-token.service';
+import { BoxOauthTokenService } from './app/services/box-oauth-token.service';
+import { BoxLocalToolsService } from './app/services/box-local-tools.service';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { AppRoutingModule } from './app/app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from './app/app.component';
+import { importProvidersFrom } from '@angular/core';
 
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+bootstrapApplication(AppComponent, {
+    providers: [
+        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, NgbModule),
+        HeadService,
+        BoxTokenService,
+        BoxOauthTokenService,
+        BoxLocalToolsService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+})
   .catch(err => console.error(err));

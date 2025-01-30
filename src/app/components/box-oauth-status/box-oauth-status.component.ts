@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-box-oauth-status',
     templateUrl: './box-oauth-status.component.html',
     styleUrls: ['./box-oauth-status.component.scss'],
-    standalone: false
+    imports: [AsyncPipe]
 })
 export class BoxOauthStatusComponent {
 

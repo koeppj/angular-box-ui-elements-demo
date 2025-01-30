@@ -1,6 +1,7 @@
 import { Component, Input, Renderer2, SimpleChanges } from '@angular/core';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { HeadService } from '@app/services/head.service';
+import { LowerCasePipe } from '@angular/common';
 const _ = require('lodash');
 
 declare let Box: any;
@@ -9,7 +10,7 @@ declare let Box: any;
     selector: 'content-explorer',
     templateUrl: './content-explorer.component.html',
     styleUrls: ['./content-explorer.component.scss'],
-    standalone: false
+    imports: [LowerCasePipe]
 })
 
 export class ContentExplorerComponent  {
