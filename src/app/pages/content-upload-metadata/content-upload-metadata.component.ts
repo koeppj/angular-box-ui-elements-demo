@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { File } from 'box-typescript-sdk-gen/lib/schemas/file.generated';
 import { BoxFolderInputComponent } from '../../components/box-folder-input/box-folder-input.component';

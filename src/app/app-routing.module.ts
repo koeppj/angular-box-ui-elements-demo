@@ -7,6 +7,7 @@ import { ContentUploadMetadataComponent } from './pages/content-upload-metadata/
 import { ContentExployerDemoComponent } from './pages/content-exployer-demo/content-exployer-demo.component';
 import { ContentUploadDemoComponent } from './pages/content-upload-demo/content-upload-demo.component';
 import { ContentPreviewDemoComponent } from './pages/content-preview-demo/content-preview-demo.component';
+import { ContractListPageComponent } from './pages/contract-list-page/contract-list-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'content-uploader', component: ContentUploadDemoComponent },
   { path: 'content-preview', component: ContentPreviewDemoComponent },
   { path: 'content-upload-metadata', component: ContentUploadMetadataComponent },
+  { path: 'list-contracts', component: ContractListPageComponent},
   { path: 'pre-login', component: PreBoxLoginComponent },
   { path: 'post-login', component: PostBoxLoginComponent }
 ];

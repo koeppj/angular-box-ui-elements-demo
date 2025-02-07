@@ -1,0 +1,29 @@
+<div class="container my-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Party Name</th>
+                <th>Contract Type</th>
+                <th>End Date</th>
+                <th>Auto Renew</th>
+                <th>Lawyer</th>
+                <th>Risk Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contract of paginatedData">
+                <td>{{ contract.name }}</td>
+                <td>{{ contract.externalPartyName }}</td>
+                <td>{{ contract.contractType }}</td>
+                <td>{{ contract.endDate }}</td>
+                <td>{{ contract.autoRenew }}</td>
+                <td>{{ contract.lawyer }}</td>
+                <td>{{ contract.riskLevel }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <nav>
+        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize"></ngb-pagination>
+    </nav>
+</div>
