@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { environment } from '@environment/environment';
+import { ContentPickerComponent } from '../content-picker/content-picker.component';
 
 @Component({
   selector: 'app-box-file-input',
@@ -25,7 +27,22 @@ export class BoxFileInputComponent {
     this.validatedFileIdChange.emit(this._validatedFileId);
   }
 
-  constructor(private boxOauthTokenService: BoxOauthTokenService) {}
+  constructor(private boxOauthTokenService: BoxOauthTokenService, private modal: NgbModal) {}
+
+  public onSelectFile() {
+    const modalRef = this.modal.open(ContentPickerComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      centered: true
+    });
+
+    modalRef.componentInstance.entityId = "0"
+    modalRef.componentInstance.accessToken = this.boxOauthTokenService.accessToken$
+    modalRef.componentInstance.options = {
+      modal: true,
+      maxSelectable: 1
+    }
+  }
 
   public onValidateFileId() {
     console.debug('folderId:', this.fileId.value);

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { CreateMetadataTemplateRequestBodyFieldsField, GetMetadataTemplateScope } from 'box-typescript-sdk-gen/lib/managers/metadataTemplates.generated';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +10,16 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   public schemaPresent$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public schemaMessage$: BehaviorSubject<string> = new BehaviorSubject<string>('Contract templates does not exist - click to create')
   private templateName = 'contract'
+
+  private authSubscription: Subscription | undefined = undefined;
   
   constructor(public boxOathTokenService: BoxOauthTokenService) {
-    this.boxOathTokenService.isAuthenticated$.subscribe(isAuthenticated => {
+    this.authSubscription = this.boxOathTokenService.isAuthenticated$.subscribe(isAuthenticated => {
       if (isAuthenticated) {
       // Use the Box SDK to check for the existence of a metadata schema called "contract"
       // Assuming you have a Box SDK client instance available as `boxClient`
@@ -34,6 +36,10 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  ngOnDestroy(): void {
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+  }
+  
   ngOnInit(): void {
 
   }

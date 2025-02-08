@@ -3,7 +3,7 @@ import { ContractListComponent } from "../../components/contract-list/contract-l
 
 @Component({
   selector: 'app-contract-list-page',
-  imports: [ContractListPageComponent, ContractListComponent],
+  imports: [ContractListComponent],
   templateUrl: './contract-list-page.component.html',
   styleUrl: './contract-list-page.component.scss'
 })

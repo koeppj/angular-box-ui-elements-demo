@@ -4,6 +4,7 @@
             <input type="text" [formControl]='fileId' class="form-control" placeholder="Folder ID" aria-label="Folder ID" maxlength="15" style="flex: 1 1 auto;">
             <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="onValidateFileId()">Fetch File</button>
         </div>
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="onSelectFile()">Select File</button>
         <input type="text" [formControl]='fileName' class="form-control border-0" placeholder="File Name" aria-label="File Name" readonly style="flex: 1 1 auto;">
     </div>
 </div>
