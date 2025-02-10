@@ -1,0 +1,9 @@
+<div id="pickerdialog">
+    <content-picker 
+        componentId="pickerdialog" 
+        [entityId]="entityId" 
+        [accessToken]="(boxOAthTokenService.accessToken$ | async) ?? ''" [options]="options"
+        [boxComponent]="boxComponent"
+        (selectedItems)="onSelectItems($event)">
+    </content-picker>
+</div>

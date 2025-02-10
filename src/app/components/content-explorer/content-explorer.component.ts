@@ -15,8 +15,8 @@ declare let Box: any;
 
 export class ContentExplorerComponent  {
 
-  boxCdnJS = "https://cdn01.boxcdn.net/platform/elements/21.0.0/en-US/explorer.js";
-  boxCdnCss = "https://cdn01.boxcdn.net/platform/elements/21.0.0/en-US/explorer.css";
+  boxCdnJS = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/explorer.js";
+  boxCdnCss = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/explorer.css";
   boxComponent = BoxComponentsType.ContentExplorer;
 
   @Input() accessToken: string | undefined = '';

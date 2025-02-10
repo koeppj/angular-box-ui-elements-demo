@@ -1,19 +1,33 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { environment } from '@environment/environment';
-import { ContentPickerComponent } from '../content-picker/content-picker.component';
+import { ContentPickerDialogComponent } from '../content-picker-dialog/content-picker-dialog.component';
+import { BoxComponentsType } from '@app/enums/box-component-enum';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-box-file-input',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,NgbModalModule,CommonModule],
   templateUrl: './box-file-input.component.html',
-  styleUrl: './box-file-input.component.scss'
+  styleUrl: './box-file-input.component.scss',
+  standalone: true
 })
 export class BoxFileInputComponent {
   fileId:FormControl = new FormControl(environment.BoxPreviewFileID, [Validators.required]);
   fileName:any = new FormControl('???', []);
+
+  @Output('selectingFile') selectingFileChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  private _selectingFile: boolean = true;
+  get selectingFile(): boolean {
+    return this._selectingFile
+  }
+
+  set selectingFile(value: boolean) {
+    this._selectingFile = value;
+    this.selectingFileChange.emit(this._selectingFile);
+  }
 
   @Output('fileId') validatedFileIdChange: EventEmitter<string> = new EventEmitter<string>();
   private _validatedFileId: string = environment.BoxPreviewFileID;
@@ -27,21 +41,35 @@ export class BoxFileInputComponent {
     this.validatedFileIdChange.emit(this._validatedFileId);
   }
 
+
   constructor(private boxOauthTokenService: BoxOauthTokenService, private modal: NgbModal) {}
 
   public onSelectFile() {
-    const modalRef = this.modal.open(ContentPickerComponent, {
+    this.selectingFile = true;
+    const modalRef = this.modal.open(ContentPickerDialogComponent, {
       size: 'lg',
-      backdrop: 'static',
-      centered: true
+      centered: true,
+      backdrop: 'static'
     });
 
     modalRef.componentInstance.entityId = "0"
-    modalRef.componentInstance.accessToken = this.boxOauthTokenService.accessToken$
+    modalRef.componentInstance.boxComponent = BoxComponentsType.FilePicker
     modalRef.componentInstance.options = {
-      modal: true,
       maxSelectable: 1
-    }
+    };
+
+    modalRef.result.then((result: any) => {
+      const selectedFileId = result[0].id;
+      const selectedName = result[0].name;
+      this.fileName.setValue(selectedName);
+      this._validatedFileId = selectedFileId;
+      console.debug(`Select File: ${selectedFileId} - ${selectedName}`)
+      this.selectingFile = false;
+    }).catch((reason: any) => {
+      this.selectingFile = false;
+      console.log(reason);
+    });
+
   }
 
   public onValidateFileId() {

@@ -1,33 +1,35 @@
-import { Component, Input, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { HeadService } from '@app/services/head.service';
-import { LowerCasePipe } from '@angular/common';
 const _ = require('lodash');
 
 declare let Box: any;
 
 @Component({
-    selector: 'content-upload',
-    templateUrl: './content-upload.component.html',
-    styleUrls: ['./content-upload.component.scss'],
-    imports: [LowerCasePipe]
+    selector: 'content-picker',
+    templateUrl: './content-picker.component.html',
+    styleUrls: ['./content-picker.component.scss'],
+    imports: []
 })
 
-export class ContentUploadComponent  {
+export class ContentPickerComponent implements OnInit, OnChanges, AfterViewInit {
 
-  boxCdnJS = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/uploader.js";
-  boxCdnCss = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/uploader.css";
-  boxComponent = BoxComponentsType.ContentUploader;
+  boxCdnJS = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/picker.js";
+  boxCdnCss = "https://cdn01.boxcdn.net/platform/elements/22.0.0/en-US/picker.css";
 
-  @Input() accessToken: string | undefined = '';
+  @Input() accessToken: string | undefined = undefined
   @Input() entityId: string | undefined = '0';
   @Input() componentId: string | undefined = 'box-abstact-component';
   @Input() options: any = {};
+  @Input() boxComponent: BoxComponentsType = BoxComponentsType.ContentPicker
+  @Output('selectedItems') selectedItems: EventEmitter<string> = new EventEmitter<string>();
+
   boxToken: string | undefined;
   private opts!: any;
   private boxComponentInstance!: any;
 
-  constructor(private renderer: Renderer2,private headService: HeadService) {}
+  constructor(private renderer: Renderer2,
+    private headService: HeadService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.reloadCompent();
@@ -70,20 +72,31 @@ export class ContentUploadComponent  {
   }
 
   private initializeComponent(): void { 
+    console.debug(`initialzeComponent() with ${this.accessToken}`);
     this.boxComponentInstance = new Box[this.boxComponent]();
-
-    this.opts = _.merge({},{container: `#${this.boxComponent.toLowerCase()}`},this.options);
+    this.boxComponentInstance.addListener("choose", (items: any) => {
+      this.selectedItems.emit(items);
+    });
+    this.boxComponentInstance.addListener("cancel", () => {
+      this.selectedItems.emit(undefined);
+    })
+    this.opts = _.merge({},{container: `#${this.componentId}`},this.options);
     if (this.accessToken !== undefined) {
+      console.log("Showing Component...");
       this.boxComponentInstance.show(this.entityId, this.accessToken, this.opts);
     }
   }
 
   private reloadCompent(): void {
+    console.debug(`reloadComponent() with ${this.accessToken}`);
     if (this.boxComponentInstance) {
+      console.debug("Has instance...");
       this.boxComponentInstance.hide();
-      this.boxComponentInstance.show(this.entityId, this.accessToken, this.opts);
+      if (this.accessToken !== undefined) {
+        console.log("Showing...");
+        this.boxComponentInstance.show(this.entityId, this.accessToken, this.opts);
+      }
     }
   }
-
 }
 

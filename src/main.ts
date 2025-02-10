@@ -11,14 +11,14 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { AppRoutingModule } from './app/app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, NgbModule),
+        importProvidersFrom(BrowserModule, AppRoutingModule, ReactiveFormsModule, NgbModule, NgbModalModule),
         HeadService,
         BoxTokenService,
         BoxOauthTokenService,
