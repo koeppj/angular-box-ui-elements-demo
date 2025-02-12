@@ -6,10 +6,11 @@ import { environment } from '@environment/environment';
 import { ContentPickerDialogComponent } from '../content-picker-dialog/content-picker-dialog.component';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { CommonModule } from '@angular/common';
+import { ContentPickerComponent } from '../content-picker/content-picker.component';
 
 @Component({
   selector: 'app-box-file-input',
-  imports: [ReactiveFormsModule,NgbModalModule,CommonModule],
+  imports: [ReactiveFormsModule,NgbModalModule,CommonModule,ContentPickerComponent],
   templateUrl: './box-file-input.component.html',
   styleUrl: './box-file-input.component.scss',
   standalone: true
@@ -42,7 +43,7 @@ export class BoxFileInputComponent {
   }
 
 
-  constructor(private boxOauthTokenService: BoxOauthTokenService, private modal: NgbModal) {}
+  constructor(public boxOauthTokenService: BoxOauthTokenService, private modal: NgbModal) {}
 
   public onSelectFile() {
     this.selectingFile = true;
