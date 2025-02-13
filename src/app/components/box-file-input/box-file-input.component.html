@@ -1,14 +1,16 @@
-<div class="p-3 m-0 border-0 bd-example m-0 border-0">
-    <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="onSelectFile()">Select File</button>
-        <input type="text" [formControl]='fileName' class="form-control border-0" placeholder="File Name" aria-label="File Name" readonly style="flex: 1 1 auto;">
-    </div>
+<ng-template #content let-offcanvas>
     <div id="pickerdialog">
         <content-picker 
             componentId="pickerdialog" 
             entityId="0" 
-            [accessToken]="(boxOauthTokenService.accessToken$ | async) ?? ''">
+            [accessToken]="(boxOauthTokenService.accessToken$ | async) ?? ''"
+            (selectedItems)="onSelectItems($event)">
         </content-picker>
     </div>
-        
+</ng-template>
+<div class="p-3 m-0 border-0 bd-example m-0 border-0">
+    <div class="input-group mb-3">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="open(content)">Select File</button>
+        <input type="text" [formControl]='fileName' class="form-control border-0" placeholder="File Name" aria-label="File Name" readonly style="flex: 1 1 auto;">
+    </div>
 </div>

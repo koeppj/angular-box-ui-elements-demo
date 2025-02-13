@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, WritableSignal, TemplateRef, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
-import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveOffcanvas, NgbModal, NgbModalModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { environment } from '@environment/environment';
 import { ContentPickerDialogComponent } from '../content-picker-dialog/content-picker-dialog.component';
@@ -18,6 +18,7 @@ import { ContentPickerComponent } from '../content-picker/content-picker.compone
 export class BoxFileInputComponent {
   fileId:FormControl = new FormControl(environment.BoxPreviewFileID, [Validators.required]);
   fileName:any = new FormControl('???', []);
+  closeResult: WritableSignal<string>= signal('');
 
   @Output('selectingFile') selectingFileChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private _selectingFile: boolean = true;
@@ -43,34 +44,28 @@ export class BoxFileInputComponent {
   }
 
 
-  constructor(public boxOauthTokenService: BoxOauthTokenService, private modal: NgbModal) {}
+  constructor(public boxOauthTokenService: BoxOauthTokenService, 
+    private modal: NgbModal,
+    private NgbOffcancas: NgbOffcanvas,
+    private NgbActiveOffcanvas: NgbActiveOffcanvas) {}
 
-  public onSelectFile() {
-    this.selectingFile = true;
-    const modalRef = this.modal.open(ContentPickerDialogComponent, {
-      size: 'lg',
-      centered: true,
-      backdrop: 'static'
-    });
+  open(content: TemplateRef<any>) {
+    this.NgbOffcancas.open(content).result.then(
+      (result) => {
+        console.debug(result);
+      },
+      (reason) => {
 
-    modalRef.componentInstance.entityId = "0"
-    modalRef.componentInstance.boxComponent = BoxComponentsType.FilePicker
-    modalRef.componentInstance.options = {
-      maxSelectable: 1
-    };
+      }
+    )
+  }
 
-    modalRef.result.then((result: any) => {
-      const selectedFileId = result[0].id;
-      const selectedName = result[0].name;
-      this.fileName.setValue(selectedName);
-      this._validatedFileId = selectedFileId;
-      console.debug(`Select File: ${selectedFileId} - ${selectedName}`)
-      this.selectingFile = false;
-    }).catch((reason: any) => {
-      this.selectingFile = false;
-      console.log(reason);
-    });
-
+  onSelectItems(items: any) {
+    if (items) {
+      this.NgbActiveOffcanvas.close(items)
+    } else {
+      this.NgbActiveOffcanvas.dismiss("Cancel")
+    }
   }
 
   public onValidateFileId() {
