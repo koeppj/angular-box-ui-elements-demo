@@ -4,7 +4,9 @@
             componentId="pickerdialog" 
             entityId="0" 
             [accessToken]="(boxOauthTokenService.accessToken$ | async) ?? ''"
-            (selectedItems)="onSelectItems($event)">
+            (selectedItems)="onSelectItems($event)"
+            [options]="options"
+            [boxComponent]="boxComponent">
         </content-picker>
     </div>
 </ng-template>

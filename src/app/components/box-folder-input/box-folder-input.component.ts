@@ -1,17 +1,30 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { ContentPickerComponent } from '../content-picker/content-picker.component';
+import { BoxComponentsType } from '@app/enums/box-component-enum';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-box-folder-input',
   templateUrl: './box-folder-input.component.html',
   styleUrl: './box-folder-input.component.scss',
-  imports: [ReactiveFormsModule]
+  imports: [ReactiveFormsModule,ContentPickerComponent,CommonModule],
+  standalone: true
 })
 export class BoxFolderInputComponent {
 
   folderId:FormControl = new FormControl('0', [Validators.required]);
   folderName:any = new FormControl('All', []);
+  options = {
+    maxSelectable: 1,
+    canUpload: false,
+    canSetShareAccess: false,
+    canCreateNewFolder: false,
+    autoFocus: true,
+  }
+  boxComponent = BoxComponentsType.FilePicker;
 
   @Output('folderId') validatedFolderIdChange: EventEmitter<string> = new EventEmitter<string>();
   private _validatedFolderId: string = '0';
@@ -25,7 +38,7 @@ export class BoxFolderInputComponent {
     this.validatedFolderIdChange.emit(this._validatedFolderId);
   }
 
-  constructor(private boxOauthTokenService: BoxOauthTokenService) {}
+  constructor(public boxOauthTokenService: BoxOauthTokenService,ngbOffCanvas: NgbOffcanvas) {}
 
   public onValidateFolderId() {
     console.debug('folderId:', this.folderId.value);

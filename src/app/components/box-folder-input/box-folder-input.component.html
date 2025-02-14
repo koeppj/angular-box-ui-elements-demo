@@ -1,9 +1,18 @@
+<ng-template #content let-offcanvas>
+    <div id="pickerdialog">
+        <content-picker 
+            componentId="pickerdialog" 
+            entityId="0" 
+            [accessToken]="(boxOauthTokenService.accessToken$ | async) ?? ''"
+            (selectedItems)="onSelectItems($event)"
+            [options]="options"
+            [boxComponent]="boxComponent">
+        </content-picker>
+    </div>
+</ng-template>
 <div class="p-3 m-0 border-0 bd-example m-0 border-0">
     <div class="input-group mb-3">
-        <div class="input-group-prepend" style="max-width: 300px; display: flex; flex-wrap: nowrap;">
-            <input type="text" [formControl]='folderId' class="form-control" placeholder="Folder ID" aria-label="Folder ID" maxlength="15" style="flex: 1 1 auto;">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="onValidateFolderId()">Fetch Folder</button>
-        </div>
-        <input type="text" [formControl]='folderName' class="form-control border-0" placeholder="Folder Name" aria-label="Folder Name" readonly style="flex: 1 1 auto;">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="open(content)">Select File</button>
+        <input type="text" [formControl]='folderName' class="form-control border-0" placeholder="File Name" aria-label="File Name" readonly style="flex: 1 1 auto;">
     </div>
 </div>

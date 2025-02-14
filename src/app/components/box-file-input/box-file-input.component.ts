@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Output, WritableSignal, TemplateRef, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
-import { NgbActiveOffcanvas, NgbModal, NgbModalModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { environment } from '@environment/environment';
-import { ContentPickerDialogComponent } from '../content-picker-dialog/content-picker-dialog.component';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { CommonModule } from '@angular/common';
 import { ContentPickerComponent } from '../content-picker/content-picker.component';
 
 @Component({
   selector: 'app-box-file-input',
-  imports: [ReactiveFormsModule,NgbModalModule,CommonModule,ContentPickerComponent],
+  imports: [ReactiveFormsModule,CommonModule,ContentPickerComponent],
   templateUrl: './box-file-input.component.html',
   styleUrl: './box-file-input.component.scss',
   standalone: true
@@ -18,7 +17,14 @@ import { ContentPickerComponent } from '../content-picker/content-picker.compone
 export class BoxFileInputComponent {
   fileId:FormControl = new FormControl(environment.BoxPreviewFileID, [Validators.required]);
   fileName:any = new FormControl('???', []);
-  closeResult: WritableSignal<string>= signal('');
+  options = {
+    maxSelectable: 1,
+    canUpload: false,
+    canSetShareAccess: false,
+    canCreateNewFolder: false,
+    autoFocus: true,
+  }
+  boxComponent = BoxComponentsType.FilePicker;
 
   @Output('selectingFile') selectingFileChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private _selectingFile: boolean = true;
@@ -45,9 +51,7 @@ export class BoxFileInputComponent {
 
 
   constructor(public boxOauthTokenService: BoxOauthTokenService, 
-    private modal: NgbModal,
-    private NgbOffcanvas: NgbOffcanvas,
-    private NgbActiveOffcanvas: NgbActiveOffcanvas) {}
+    private NgbOffcanvas: NgbOffcanvas) {}
 
   open(content: TemplateRef<any>) {
     this.NgbOffcanvas.open(content).result.then(
@@ -55,7 +59,18 @@ export class BoxFileInputComponent {
         console.debug(result);
       },
       (reason) => {
-        console.debug(`Reason: ${reason}`)
+        switch (reason) {
+          case OffcanvasDismissReasons.BACKDROP_CLICK:
+            break;
+          case OffcanvasDismissReasons.ESC:
+            break;
+          case "Cancel":
+            break;
+          default: {
+            this.validatedFileId = reason[0].id;
+            this.fileName.setValue(reason[0].name);
+          }
+        }
       }
     )
   }
@@ -66,17 +81,6 @@ export class BoxFileInputComponent {
     } else {
       this.NgbOffcanvas.dismiss("Cancel")
     }
-  }
-
-  public onValidateFileId() {
-    console.debug('folderId:', this.fileId.value);
-    this.boxOauthTokenService.boxClient.files.getFileById(this.fileId.value).then((file) => {
-      this.fileName.setValue(file.name);
-      this.validatedFileId = this.fileId.value.toString();
-    }).catch((error) => {
-      this.fileName.setValue('FILE NOT FOUND');
-      console.error(error);
-    })
   }
 
 }
