@@ -46,25 +46,25 @@ export class BoxFileInputComponent {
 
   constructor(public boxOauthTokenService: BoxOauthTokenService, 
     private modal: NgbModal,
-    private NgbOffcancas: NgbOffcanvas,
+    private NgbOffcanvas: NgbOffcanvas,
     private NgbActiveOffcanvas: NgbActiveOffcanvas) {}
 
   open(content: TemplateRef<any>) {
-    this.NgbOffcancas.open(content).result.then(
+    this.NgbOffcanvas.open(content).result.then(
       (result) => {
         console.debug(result);
       },
       (reason) => {
-
+        console.debug(`Reason: ${reason}`)
       }
     )
   }
 
   onSelectItems(items: any) {
     if (items) {
-      this.NgbActiveOffcanvas.close(items)
+      this.NgbOffcanvas.dismiss(items);
     } else {
-      this.NgbActiveOffcanvas.dismiss("Cancel")
+      this.NgbOffcanvas.dismiss("Cancel")
     }
   }
 
