@@ -162,7 +162,7 @@ export class ContractListComponent implements OnInit, OnDestroy {
 
   async fetchData() {
     try {
-      const query: MetadataQuery = {
+      let query: MetadataQuery = {
         ancestorFolderId: this.folderId ?? '0',
         from: `${this.scope}.contract`,
         fields: [
@@ -175,6 +175,9 @@ export class ContractListComponent implements OnInit, OnDestroy {
           `metadata.${this.scope}.contract.riskLevel`,
         ]
       }
+//      if (query) {
+//        query = { ...query, query: this.query, queryParams: this.queryParams };
+//      }
       const results = await this.boxOAuthTokenService.boxClient.search.searchByMetadataQuery(query);
       if (results) {
         this.contracts = results.entries?.map(entry => {
