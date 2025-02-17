@@ -1,8 +1,13 @@
 <div class="p3">
     <div class="row">
-        <app-box-file-input  (selectingFile)="onSelectingFile($event)" (fileId)="onFileIdChange($event)"></app-box-file-input>
+        <app-box-file-input  (fileId)="onFileIdChange($event)"></app-box-file-input>
     </div>
     <div class="row">
         <content-preview  *ngIf="showPreview" [entityId]="fileId" [accessToken]="(boxOAuthService.accessToken$ | async) ?? ''" [options]="options"></content-preview>
+        <div *ngIf="!showPreview">
+            <div class="d-flex justify-content-center align-items-center vh-100">
+                <h3>Select a File to See a Preview</h3>
+            </div>
+        </div>
     </div>
 </div>

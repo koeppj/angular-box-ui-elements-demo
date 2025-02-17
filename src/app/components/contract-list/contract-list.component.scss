@@ -1,0 +1,4 @@
+:host ::ng-deep .no-caret::after {
+    /* Hide the Bootstrap caret */
+    display: none !important;
+  }

@@ -14,8 +14,8 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 
 export class ContentPreviewDemoComponent {
 
-  fileId = environment.BoxPreviewFileID
-  showPreview = true;
+  fileId: string | undefined = undefined;
+  showPreview = false;
   options = {};
 
   constructor(public boxOAuthService: BoxOauthTokenService
@@ -25,11 +25,7 @@ export class ContentPreviewDemoComponent {
 
   onFileIdChange(folderId: string) {
     this.fileId = folderId;
-  }
-
-  onSelectingFile(selectingFile: boolean) {
-    console.debug(`onSelectingFile(${selectingFile})`);
-    this.showPreview = !selectingFile;
+    this.showPreview = true;
   }
 
 }

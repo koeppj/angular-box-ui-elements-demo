@@ -9,17 +9,35 @@
                 <th>Auto Renew</th>
                 <th>Lawyer</th>
                 <th>Risk Level</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let contract of paginatedData">
-                <td>{{ contract.name }}</td>
+                <td>{{ contract.name }}<span *ngIf="contract.lock" class="px-1"><ng-icon name="bootstrapLockFill" color="red"/></span></td>
                 <td>{{ contract.externalPartyName }}</td>
                 <td>{{ contract.contractType }}</td>
                 <td>{{ contract.endDate }}</td>
                 <td>{{ contract.autoRenew }}</td>
                 <td>{{ contract.lawyer }}</td>
                 <td>{{ contract.riskLevel }}</td>
+                <td class="overflow-hidden">
+                    <div ngbDropdown container="body" #myDropdown="ngbDropdown" class="d-inline-block">
+                        <button ngbDropdownAnchor 
+                            id="actionDropdown"
+                            class="btn btn-light border-0 no-caret"
+                            (click)="myDropdown.toggle()">...
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="actionDropdown">
+                                <botton ngbDropdownItem (click)="onLock(contract.id)" [disabled]="contract.lock!=undefined">Lock</botton>
+                                <botton ngbDropdownItem (click)="onUnlock(contract.id)" [disabled]="contract.lock===undefined">Unlock</botton>
+                                <button ngbDropdownItem (click)="onPreview(contract.id)">Preview</button>
+                                <button ngbDropdownItem (click)="onDownload(contract.id)">Download</button>
+                                <button ngbDropdownItem>Upload</button>
+                                <button ngbDropdownItem (click)="onDelete(contract.id)" [disabled]="contract.lock!=undefined">Delete</button>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>

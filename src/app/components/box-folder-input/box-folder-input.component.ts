@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ContentPickerComponent } from '../content-picker/content-picker.component';
 import { BoxComponentsType } from '@app/enums/box-component-enum';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,7 @@ export class BoxFolderInputComponent {
     canCreateNewFolder: false,
     autoFocus: true,
   }
-  boxComponent = BoxComponentsType.FilePicker;
+  boxComponent = BoxComponentsType.FolderPicker;
 
   @Output('folderId') validatedFolderIdChange: EventEmitter<string> = new EventEmitter<string>();
   private _validatedFolderId: string = '0';
@@ -38,17 +38,36 @@ export class BoxFolderInputComponent {
     this.validatedFolderIdChange.emit(this._validatedFolderId);
   }
 
-  constructor(public boxOauthTokenService: BoxOauthTokenService,ngbOffCanvas: NgbOffcanvas) {}
+  constructor(public boxOauthTokenService: BoxOauthTokenService, private ngbOffCanvas: NgbOffcanvas) {}
 
-  public onValidateFolderId() {
-    console.debug('folderId:', this.folderId.value);
-    this.boxOauthTokenService.boxClient.folders.getFolderById(this.folderId.value).then((folder) => {
-      this.folderName.setValue(folder.name);
-      this.validatedFolderId = this.folderId.value.toString();
-    }).catch((error) => {
-      console.error(error);
-      this.folderName.setValue('FOLDER NOT FOUND');
-    })
+  open(content: TemplateRef<any>) {
+    this.ngbOffCanvas.open(content).result.then(
+      (result) => {
+        console.debug(result);
+      },
+      (reason) => {
+        switch (reason) {
+          case OffcanvasDismissReasons.BACKDROP_CLICK:
+            break;
+          case OffcanvasDismissReasons.ESC:
+            break;
+          case "Cancel":
+            break;
+          default: {
+            this.validatedFolderId = reason[0].id;
+            this.folderName.setValue(reason[0].name);
+          }
+        }
+      }
+    )
+  }
+
+  onSelectItems(items: any) {
+    if (items) {
+      this.ngbOffCanvas.dismiss(items);
+    } else {
+      this.ngbOffCanvas.dismiss("Cancel")
+    }
   }
 }
 

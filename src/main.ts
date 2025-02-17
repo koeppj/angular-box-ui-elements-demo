@@ -14,6 +14,7 @@ import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http'
 import { NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
+import { ToastService } from '@app/services/toast.service';
 
 
 bootstrapApplication(AppComponent, {
@@ -23,6 +24,7 @@ bootstrapApplication(AppComponent, {
         BoxTokenService,
         BoxOauthTokenService,
         BoxLocalToolsService,
+        ToastService,
         provideHttpClient(withInterceptorsFromDi())
     ]
 })
