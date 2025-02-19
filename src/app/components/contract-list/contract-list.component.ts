@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { MetadataQuery, MetadataQueryOrderByField } from 'box-typescript-sdk-gen/lib/schemas/metadataQuery.generated';
-import { EventEmitter, Output } from '@angular/core';
 import { FileFullMetadataField } from 'box-typescript-sdk-gen/lib/schemas/fileFull.generated';
 import { MetadataFull } from 'box-typescript-sdk-gen/lib/schemas/metadataFull.generated'
 import { NgbDropdownModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,8 +10,10 @@ import { environment } from '@environment/environment';
 import { MetadataTemplate } from 'box-typescript-sdk-gen/lib/schemas/metadataTemplate.generated';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { bootstrapLock, bootstrapLockFill } from '@ng-icons/bootstrap-icons';
-import { DeleteFileByIdHeadersInput, DeleteFileByIdOptionalsInput, UpdateFileByIdOptionalsInput } from 'box-typescript-sdk-gen/lib/managers/files.generated';
+import { DeleteFileByIdOptionalsInput, UpdateFileByIdOptionalsInput } from 'box-typescript-sdk-gen/lib/managers/files.generated';
 import { ToastService, ToastType } from '@app/services/toast.service';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 interface ContractData {
   id: string;
@@ -49,10 +50,14 @@ export class ContractListComponent implements OnInit, OnDestroy {
   authSubscription: Subscription | undefined = undefined;
   isAuthenticated: boolean = false;
   errorMessage: string = '';
+  selectedContract: ContractData | undefined = undefined;
+  selectedFile: File | undefined = undefined;
 
   scope = `enterprise_${environment.BoxEnterpriseId}`;
 
-  constructor(public boxOAuthTokenService: BoxOauthTokenService, private toastService: ToastService) {
+  constructor(public boxOAuthTokenService: BoxOauthTokenService, 
+             private toastService: ToastService,
+             private httpClient: HttpClient) {
     this.boxOAuthTokenService.isAuthenticated$.subscribe(isAuthenticated => {
       if (isAuthenticated)
         this.setUp();
@@ -158,6 +163,44 @@ export class ContractListComponent implements OnInit, OnDestroy {
       this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
     })
 
+  }
+
+  showUploadForm(contract: ContractData) {
+    this.selectedContract = contract;
+    this.selectedFile = undefined;
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload(contract: ContractData) {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      const uploadOpts = {
+        queryParams: {
+          fields: 'id'
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      /*
+      this.boxOAuthTokenService.boxClient.files.uploadFile(formData,uploadOpts).then(file => {
+        this.toastService.show({type: ToastType.Message, message: "File Uploaded"});
+      }).catch(error => {
+        this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
+      })
+        */
+    }
+    this.selectedContract = undefined;
+    this.selectedFile = undefined;
+  }
+
+  onUploadCancel() {
+    this.selectedContract = undefined;
+    this.selectedFile = undefined;
   }
 
   async fetchData() {

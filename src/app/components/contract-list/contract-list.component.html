@@ -13,32 +13,64 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let contract of paginatedData">
-                <td>{{ contract.name }}<span *ngIf="contract.lock" class="px-1"><ng-icon name="bootstrapLockFill" color="red"/></span></td>
-                <td>{{ contract.externalPartyName }}</td>
-                <td>{{ contract.contractType }}</td>
-                <td>{{ contract.endDate }}</td>
-                <td>{{ contract.autoRenew }}</td>
-                <td>{{ contract.lawyer }}</td>
-                <td>{{ contract.riskLevel }}</td>
-                <td class="overflow-hidden">
-                    <div ngbDropdown container="body" #myDropdown="ngbDropdown" class="d-inline-block">
-                        <button ngbDropdownAnchor 
-                            id="actionDropdown"
-                            class="btn btn-light border-0 no-caret"
-                            (click)="myDropdown.toggle()">...
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="actionDropdown">
-                                <botton ngbDropdownItem (click)="onLock(contract.id)" [disabled]="contract.lock!=undefined">Lock</botton>
-                                <botton ngbDropdownItem (click)="onUnlock(contract.id)" [disabled]="contract.lock===undefined">Unlock</botton>
-                                <button ngbDropdownItem (click)="onPreview(contract.id)">Preview</button>
-                                <button ngbDropdownItem (click)="onDownload(contract.id)">Download</button>
-                                <button ngbDropdownItem>Upload</button>
-                                <button ngbDropdownItem (click)="onDelete(contract.id)" [disabled]="contract.lock!=undefined">Delete</button>
+            <ng-container *ngFor="let contract of paginatedData">
+                <tr>
+                    <td>{{ contract.name }}<span *ngIf="contract.lock" class="px-1"><ng-icon name="bootstrapLockFill" color="red"/></span></td>
+                    <td>{{ contract.externalPartyName }}</td>
+                    <td>{{ contract.contractType }}</td>
+                    <td>{{ contract.endDate }}</td>
+                    <td>{{ contract.autoRenew }}</td>
+                    <td>{{ contract.lawyer }}</td>
+                    <td>{{ contract.riskLevel }}</td>
+                    <td class="overflow-hidden">
+                        <div ngbDropdown container="body" #myDropdown="ngbDropdown" class="d-inline-block">
+                            <button ngbDropdownAnchor 
+                                id="actionDropdown"
+                                class="btn btn-light border-0 no-caret"
+                                (click)="myDropdown.toggle()">...
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="actionDropdown">
+                                    <botton ngbDropdownItem (click)="onLock(contract.id)" [disabled]="contract.lock!=undefined">Lock</botton>
+                                    <botton ngbDropdownItem (click)="onUnlock(contract.id)" [disabled]="contract.lock===undefined">Unlock</botton>
+                                    <button ngbDropdownItem (click)="onPreview(contract.id)">Preview</button>
+                                    <button ngbDropdownItem (click)="onDownload(contract.id)">Download</button>
+                                    <button ngbDropdownItem (click)="showUploadForm(contract)">Upload</button>
+                                    <button ngbDropdownItem (click)="onDelete(contract.id)" [disabled]="contract.lock!=undefined">Delete</button>
+                            </div>
                         </div>
-                    </div>
+                    </td>
+                </tr>
+                <tr *ngIf="selectedContract?.id === contract.id" >
+                    <td colspan="8" class="bg-light">
+                        <form class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="fileinput{{ contract.id }}" class="col-form-label">Select File</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="file" id="fileinput{{ contract.id }}" class="form-control" (change)="onFileSelected($event)" accept="*/*" webkitdirectory mozdirectory>
+                            </div>
+                            <div class="col-auto">
+                                <button
+                                  type="button"
+                                  class="btn btn-primary btn-sm me-2"
+                                  (click)="onUpload(contract)"
+                                  [disabled]="!selectedFile"
+                                >
+                                  <i class="bi bi-cloud-upload"></i>
+                                  Upload
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary btn-sm"
+                                  (click)="onUploadCancel()"
+                                >
+                                  <i class="bi bi-x-circle"></i>
+                                  Cancel
+                                </button>
+                            </div>
+                        </form>
                 </td>
-            </tr>
+            </ng-container>
         </tbody>
     </table>
     <nav>
