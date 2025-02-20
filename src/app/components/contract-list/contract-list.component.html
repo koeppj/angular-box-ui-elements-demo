@@ -47,7 +47,7 @@
                                 <label for="fileinput{{ contract.id }}" class="col-form-label">Select File</label>
                             </div>
                             <div class="col-auto">
-                                <input type="file" id="fileinput{{ contract.id }}" class="form-control" (change)="onFileSelected($event)" accept="*/*" webkitdirectory mozdirectory>
+                                <input type="file" id="fileinput{{ contract.id }}" class="form-control" (change)="onFileSelected($event)" accept="*/*" webkitfile mozfile msfile>
                             </div>
                             <div class="col-auto">
                                 <button

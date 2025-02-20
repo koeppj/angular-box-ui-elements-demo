@@ -14,6 +14,7 @@ import { DeleteFileByIdOptionalsInput, UpdateFileByIdOptionalsInput } from 'box-
 import { ToastService, ToastType } from '@app/services/toast.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { Files } from 'box-typescript-sdk-gen/lib/schemas/files.generated';
 
 interface ContractData {
   id: string;
@@ -174,18 +175,38 @@ export class ContractListComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0];
   }
 
-  onUpload(contract: ContractData) {
+  async onUpload(contract: ContractData) {
     if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('file', this.selectedFile);
-      const uploadOpts = {
-        queryParams: {
-          fields: 'id'
-        },
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      try {
+        const token = await this.boxOAuthTokenService.getBearerToken();
+        const formData = new FormData();
+        const attrs = {
+          name: this.selectedFile.name,
+          content_modified_at: new Date(this.selectedFile.lastModified).toISOString().split('.')[0].replace('Z', '+00:00')
+        }
+        formData.append('attributes', JSON.stringify(attrs));
+        formData.append('file', this.selectedFile);
+        let headers: { [key: string]: string } = {
+          "Authorization": `${token}`,
+        };
+        if (contract.etag) {
+          headers['If-Match'] = contract.etag;
+        }
+        const response = await lastValueFrom(this.httpClient.post(`https://upload.box.com/api/2.0/files/${contract.id}/content`, formData, {
+          headers: headers,
+          observe: 'response'}
+        )) as Files;
+        if (response) {
+          contract.etag = response.entries?.[0].etag;
+          contract.name = response.entries?.[0].name;
+          this.updatedContractList(contract);
+          this.toastService.show({type: ToastType.Message, message: "File Uploaded"});
         }
       }
+      catch (error: any) {  
+        this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
+      }
+
       /*
       this.boxOAuthTokenService.boxClient.files.uploadFile(formData,uploadOpts).then(file => {
         this.toastService.show({type: ToastType.Message, message: "File Uploaded"});
@@ -265,6 +286,16 @@ export class ContractListComponent implements OnInit, OnDestroy {
 
   toggleAction(dropdown: any) {
     dropdown.isOpen() ? dropdown.close() : dropdown.open();
+  }
+
+  updatedContractList(newContract: ContractData) {
+    const i = this.getItem(newContract.id);
+    if (i === -1) {
+      this.contracts?.push(newContract);
+    }
+    else {
+      this.contracts?.splice(i,1,newContract);
+    }
   }
  
   getItem(id: string): number {
