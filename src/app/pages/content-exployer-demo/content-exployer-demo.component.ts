@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { BoxFolderInputComponent } from '../../components/box-folder-input/box-folder-input.component';
 import { ContentExplorerComponent } from '../../components/content-explorer/content-explorer.component';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { has } from 'lodash';
 
 @Component({
     selector: 'content-exployer-demo',
@@ -25,14 +26,16 @@ export class ContentExployerDemoComponent {
           hasProperties: true,
           hasAccessStats: true,
           hasVersions: true,
+          hasClassification: true,
+          hasNotices: true,
+          hasSkills: true,
         },
         hasMetadata: true,
         hasActivityFeed: true,
         hasVersions: true,
-      }
+      },
     },
-    canShare: false,
-    onDownload: (event: any) => this.onFilePreview(event),
+    canShare: true,
   }
 
   constructor(public boxOAuthService: BoxOauthTokenService,
