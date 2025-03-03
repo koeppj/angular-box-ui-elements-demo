@@ -24,7 +24,7 @@
     "@ng-icons/core": "^30.3.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "box-typescript-sdk-gen": "^1.10.0",
+    "box-typescript-sdk-gen": "^1.13.0",
     "lodash": "^4.17.21",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
