@@ -1,1 +1,40 @@
-<p>list-signature-requests works!</p>
+<div class="container my-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Request Name</th>
+                <th>Sender</th>
+                <th>Files</th>
+                <th>Status</th>
+                <th>Expires At</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let signRequest of paginatedData">
+                <tr>
+                    <td>{{ signRequest.name }}</td>
+                    <td>{{ getRequesterNameForRequest(signRequest) }}</td>
+                    <td>
+                    </td>
+                    <td>{{ signRequest.status }}</td>
+                    <td>{{ signRequest.autoExpireAt }}</td>
+                    <td class="overflow-hidden">
+                        <div ngbDropdown container="body" #myDropdown="ngbDropdown" class="d-inline-block">
+                            <button ngbDropdownAnchor
+                                id="actionDropdown"
+                                class="btn btn-light border-0 no-caret"
+                                (click)="myDropdown.toggle()">...
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="actionDropdown">
+                                <button ngbDropdownItem (click)="onPreview(signRequest.id)">Preview</button>
+                                <button ngbDropdownItem (click)="onDownload(signRequest.id)">Download</button>
+                                <button ngbDropdownItem (click)="onDelete(signRequest.id)">Delete</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

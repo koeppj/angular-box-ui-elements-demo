@@ -207,13 +207,6 @@ export class ContractListComponent implements OnInit, OnDestroy {
         this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
       }
 
-      /*
-      this.boxOAuthTokenService.boxClient.files.uploadFile(formData,uploadOpts).then(file => {
-        this.toastService.show({type: ToastType.Message, message: "File Uploaded"});
-      }).catch(error => {
-        this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
-      })
-        */
     }
     this.selectedContract = undefined;
     this.selectedFile = undefined;

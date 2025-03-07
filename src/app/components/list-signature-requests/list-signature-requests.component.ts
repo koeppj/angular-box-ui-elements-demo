@@ -1,7 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
 import { ToastService, ToastType } from '@app/services/toast.service';
 import { SignRequest } from 'box-typescript-sdk-gen/lib/schemas/signRequest.generated';
+import { NgbDropdownModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface SignRequester {
   id: string;
@@ -11,7 +13,7 @@ export interface SignRequester {
 
 @Component({
   selector: 'app-list-signature-requests',
-  imports: [],
+  imports: [CommonModule, NgbPaginationModule, NgbDropdownModule],
   templateUrl: './list-signature-requests.component.html',
   styleUrl: './list-signature-requests.component.scss'
 })
@@ -31,12 +33,19 @@ export class ListSignatureRequestsComponent {
     return this.signRequesterMap.get(id);
   }
 
+  getRequesterNameForRequest(request: SignRequest): string {
+    const id = (request as any).senderId;
+    const requester = this.signRequesterMap.get(id);
+    return requester ? requester.name : '';
+  }
+
   addSignRequester(signRequester: SignRequester) {
     this.signRequesterMap.set(signRequester.id, signRequester);  
   }
 
   page = 1;
   collectionSize = 0;
+  pageSize = 10;
   signatureRequests: SignRequest[] = [];
   isAuthenticated: boolean = false;
 
@@ -69,4 +78,15 @@ export class ListSignatureRequestsComponent {
       this.toastService.show({type: ToastType.Error, message: `Error ${error.statusCode}: ${error.message} `});
     }
   }
+
+  get paginatedData(): SignRequest[] {
+    if (this.signatureRequests) {
+      return this.signatureRequests
+        .slice((this.page - 1) * this.pageSize, (this?.page - 1) * this?.pageSize + this?.pageSize);
+    }
+    else {
+      return [];
+    }
+  }
+
 }
