@@ -1,5 +1,5 @@
 <ng-template #content let-offcanvas>
-    <div id="pickerdialog">
+    <div id="pickerdialog" class="h-100">
         <content-picker 
             componentId="pickerdialog" 
             entityId="0" 
@@ -10,9 +10,9 @@
         </content-picker>
     </div>
 </ng-template>
-<div class="p-3 m-0 border-0 bd-example m-0 border-0">
+<div class="m-0 border-0 bd-example m-0 border-0">
     <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="open(content)">Select File</button>
+        <button class="btn btn-primary" type="button" id="button-addon2" style="flex: 0 0 auto;" (click)="open(content)">Select File</button>
         <input type="text" [formControl]='fileName' class="form-control border-0" placeholder="File Name" aria-label="File Name" readonly style="flex: 1 1 auto;">
     </div>
 </div>

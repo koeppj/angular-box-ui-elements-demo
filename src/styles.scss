@@ -6,3 +6,12 @@
 .pageheight {
     height: 85vh;
 }
+
+.offcanvas {
+    z-index: 1060 !important; /* Ensure it appears above the modal */
+}
+
+.my-modal {
+    z-index: 1055 !important; /* Ensure it appears above the modal */
+}
+  

@@ -5,7 +5,7 @@
       <div class="row">
         <!-- External Party Name -->
         <div class="col-md-4 mb-3">
-          <label for="externalPartyName" class="form-label">External Party Name</label>
+          <label for="externalPartyName" class="form-label">External Party Name<span class="text-danger">*</span></label>
           <input
             type="text"
             id="externalPartyName"
@@ -23,7 +23,7 @@
   
         <!-- Contract Type (Dropdown) -->
         <div class="col-md-4 mb-3">
-          <label for="contractType" class="form-label">Contract Type</label>
+          <label for="contractType" class="form-label">Contract Type<span class="text-danger">*</span></label>
           <select
             id="contractType"
             class="form-control"
@@ -45,7 +45,7 @@
   
         <!-- Risk Level (Dropdown) -->
         <div class="col-md-4 mb-3">
-          <label for="riskLevel" class="form-label">Risk Level</label>
+          <label for="riskLevel" class="form-label">Risk Level<span class="text-danger">*</span></label>
           <select
             id="riskLevel"
             class="form-control"
@@ -70,7 +70,7 @@
       <div class="row">
         <!-- lawyer -->
         <div class="col-md-4 mb-3">
-          <label for="lawyer" class="form-label">lawyer</label>
+          <label for="lawyer" class="form-label">lawyer<span class="text-danger">*</span></label>
           <select
             id="lawyer"
             class="form-control"
@@ -86,7 +86,7 @@
   
         <!-- End Date -->
         <div class="col-md-4 mb-3">
-          <label for="endDate" class="form-label">End Date</label>
+          <label for="endDate" class="form-label">End Date<span class="text-danger">*</span></label>
           <input
             type="date"
             id="endDate"
@@ -101,7 +101,7 @@
   
         <!-- Auto Review (Yes/No Dropdown) -->
         <div class="col-md-4 mb-3">
-          <label for="autoRenew" class="form-label">Auto Review</label>
+          <label for="autoRenew" class="form-label">Auto Review<span class="text-danger">*</span></label>
           <select
             id="autoRenew"
             class="form-control"
@@ -121,20 +121,19 @@
         </div>
       </div>
 
-      <!-- Row 3 - File Mame -->
+      <!-- Row 3 - Target Folder | File Mame -->
       <div class="row">
-        <!-- External Party Name -->
         <div class="col-md-4 mb-3">
-          <label for="attachment" class="form-label">External Party Name</label>
-          <input
-            type="file"
-            id="attacjment"
-            class="form-control"
-            formControlName="attachment"
-            (change)="onFilesSelected($event)"
-            multiple="false"
-            [ngClass]="{'is-invalid': submitted && f['attachment'].errors}"
-          />
+          <app-box-folder-input (folderId)="onFolderIdChange($event)"></app-box-folder-input>
+        </div>
+        <div class="col-md-8 mb-3">
+          <div class="input-group">
+            <label class="btn btn-primary">
+              Select Contract File<span class="text-danger">*</span>
+              <input type="file" hidden multiple="false" (change)="onFilesSelected($event)">
+            </label>
+            <input type="text" class="form-control" formControlName="attachment" [value]="selectedfile?.name" readonly/>
+          </div>
           <div
             class="invalid-feedback"
             *ngIf="submitted && f['attachment'].errors"
@@ -145,9 +144,14 @@
       </div>
   
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary">
-        Submit
-      </button>
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary me-2">
+          Submit
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
     </form>
   </div>
 <div classs="row">

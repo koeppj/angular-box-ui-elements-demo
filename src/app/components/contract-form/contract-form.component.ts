@@ -3,20 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BoxOauthTokenService } from '@app/services/box-oauth-token.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateFileMetadataByIdScope } from 'box-typescript-sdk-gen/lib/managers/fileMetadata.generated';
 import { Files } from 'box-typescript-sdk-gen/lib/schemas/files.generated';
 import { lastValueFrom } from 'rxjs';
+import { BoxFolderInputComponent } from '../box-folder-input/box-folder-input.component';
 
 
 @Component({
   selector: 'app-contract-form',
   templateUrl: './contract-form.component.html',
   styleUrl: './contract-form.component.scss',
-  imports: [ReactiveFormsModule,CommonModule]
+  imports: [ReactiveFormsModule,CommonModule,BoxFolderInputComponent]
 })
 export class ContractFormComponent implements OnInit {
-  @Input() folderId: string | undefined = '0';
-
+  @Input()
+  folderId = '0';
+  
   contractForm!: FormGroup;
   submitted = false;
   message = '';
@@ -27,7 +30,8 @@ export class ContractFormComponent implements OnInit {
   selectedfile: File | null = null;
 
   constructor(private boxOAuthTokenService: BoxOauthTokenService,
-              private httpClient: HttpClient
+              private httpClient: HttpClient,
+              private activeModal: NgbActiveModal
   ) {
   }
 
@@ -149,10 +153,18 @@ export class ContractFormComponent implements OnInit {
     console.log('Contract Form submitted successfully:', this.contractForm.value);
   }
 
+  onCancel() {
+    this.activeModal.dismiss(); // Close the modal
+  }
+
   onFilesSelected(event:Event){
     const input = event.target as HTMLInputElement;
     if (input.files) {
       this.selectedfile = input.files[0];
     }
+  }
+
+  onFolderIdChange(folderId: string) {
+    this.folderId = folderId;
   }
 }

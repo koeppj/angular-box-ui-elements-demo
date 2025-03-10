@@ -1,10 +1,21 @@
-<div class="container my-3">
+<ng-template #content let-offcanvas>
+	<div class="offcanvas-header">
+        <h4 class="offcanvas-title">{{ selectedRequest?.name}}</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+	</div>
+	<div class="offcanvas-body">
+		<p>One fine body&hellip;</p>
+		<div class="text-end">
+			<button type="button" class="btn btn-outline-secondary" (click)="offcanvas.close('Close click')">Close</button>
+		</div>
+	</div>
+</ng-template>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Request Name</th>
                 <th>Sender</th>
-                <th>Files</th>
+                <th>Prep Needed</th>
                 <th>Status</th>
                 <th>Expires At</th>
                 <th></th>
@@ -16,25 +27,21 @@
                     <td>{{ signRequest.name }}</td>
                     <td>{{ getRequesterNameForRequest(signRequest) }}</td>
                     <td>
+                        <ng-container *ngIf="!signRequest.isDocumentPreparationNeeded; else prepNeeded">
+                            No
+                        </ng-container>
+                        <ng-template #prepNeeded>
+                            <a href="https://www.box.com" target="_blank">Yes</a>
+                        </ng-template>
                     </td>
                     <td>{{ signRequest.status }}</td>
                     <td>{{ signRequest.autoExpireAt }}</td>
-                    <td class="overflow-hidden">
-                        <div ngbDropdown container="body" #myDropdown="ngbDropdown" class="d-inline-block">
-                            <button ngbDropdownAnchor
-                                id="actionDropdown"
-                                class="btn btn-light border-0 no-caret"
-                                (click)="myDropdown.toggle()">...
-                            </button>
-                            <div ngbDropdownMenu aria-labelledby="actionDropdown">
-                                <button ngbDropdownItem (click)="onPreview(signRequest.id)">Preview</button>
-                                <button ngbDropdownItem (click)="onDownload(signRequest.id)">Download</button>
-                                <button ngbDropdownItem (click)="onDelete(signRequest.id)">Delete</button>
-                            </div>
-                        </div>
+                    <td>
+                        <button type="button" class="btn btn-light" (click)="showDetails(signRequest, content)">
+                            <ng-icon name="bootstrapInfoCircle"></ng-icon>
+                        </button>
                     </td>
                 </tr>
             </ng-container>
         </tbody>
     </table>
-</div>
